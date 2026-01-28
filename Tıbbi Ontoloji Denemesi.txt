@@ -1,0 +1,146 @@
+Protege diye bir açık kaynak programa ontoloji yüklenerek çıkarım yapılıyormuş. Yapay zeka ile metinlerden daha hızlı ontoloji çıkarılarak bu programa yüklenirse daha kolay cevap bulmayı sağlayabiliriz. 
+
+METİN 1:
+"Araştırmalar, ailesel birikim gösterdiğini ve belirli genlerin (örneğin FOXC2, NOX, NOS, CALM3 gibi) damar yapısını, bağ dokusunu veya inflamasyon yanıtını etkileyerek predispozisyon yarattığını ortaya koyuyor."
+
+Tıbbi ontoloji örneği mi?
+
+FOXC2 geni damar yapısını etkiler
+NOX geni bağ dokusunu etkiler
+NOS inflamasyon yanıtını etkiler
+Damar yapısı, bağ dokusu, inflamasyon etkilenirse predispozisyona neden olur
+
+METİN 2:
+"Hemoroidler, anüs ve rektum çevresindeki normal anal yastıkların (anal cushions) anormal şekilde genişlemesi ve aşağı doğru yer değiştirmesiyle oluşur. Bu yastıklar, aslında herkesin anatomisinde bulunan venöz (damar) yapılar olup, dışkılama sırasında anüsü kapatmaya yardımcı olur. Ancak artan intra-abdominal basınç (karın içi basınç), venöz drenaj bozukluğu veya bağ dokusu zayıflığı gibi faktörler devreye girince, bu damarlar dilatasyon (genişleme) ve engorgement (dolgunlaşma) yaşar. Sonuçta, damar duvarları gerilir, şişer ve iltihaplanır. Özellikle dış hemoroidlerde, bu şişlik tromboz (pıhtı oluşumu) ile daha da kötüleşebilir, çünkü pıhtı damar içindeki kan akışını tıkar ve ani, şiddetli şişmeye neden olur. Bu süreç, sert dışkı, aşırı ikınma veya diğer basınç artırıcı etkenlerle tetiklenir; damar duvarlarının incelmesi ve hasar görmesiyle ilerler."
+
+Verdiğin tıbbi metinden yola çıkarak; Varlıklar (Entities), Sınıflar (Classes) ve İlişkiler (Relationships) tabanlı, Protégé veya benzeri bir ontoloji aracına aktarılabilecek yapısal bir döküm hazırladım.
+
+Bu ontoloji, Hemoroid Patofizyolojisi alanını modellemektedir.
+
+1. Temel Sınıflar (Classes)
+Metinden çıkarılan ana kavramlar hiyerarşisi:
+
+Anatomik_Yapı
+
+Anal_Yastık (Anal Cushion)
+
+Venöz_Yapı (Damar)
+
+Damar_Duvarı
+
+Anüs
+
+Rektum
+
+Hastalık_Durumu
+
+Hemoroid
+
+Dış_Hemoroid
+
+Patolojik_Süreç (Hastalık gelişimi)
+
+Dilatasyon (Genişleme)
+
+Engorgement (Dolgunlaşma)
+
+Deplasman (Aşağı doğru yer değiştirme)
+
+Enflamasyon (İltihaplanma)
+
+Tromboz (Pıhtı oluşumu)
+
+Damar_Duvarı_Hasarı
+
+Etiyolojik_Faktör (Nedenler/Tetikleyiciler)
+
+Mekanik_Faktör (Örn: Aşırı ıkınma)
+
+Fizyolojik_Faktör (Örn: İntra-abdominal basınç artışı)
+
+Yapısal_Faktör (Örn: Bağ dokusu zayıflığı, Venöz drenaj bozukluğu)
+
+Madde
+
+Dışkı (Özellik: Sert)
+
+Kan_Pıhtısı
+
+2. Nesne Özellikleri / İlişkiler (Object Properties)
+Kavramları birbirine bağlayan "fiiller":
+
+yerleşim_yeridir (located_in)
+
+kaynağıdır (originates_from)
+
+işlevidir (has_function)
+
+neden_olur (causes / triggers)
+
+kötüleştirir (aggravates)
+
+sonucudur (results_in)
+
+engeller (obstructs)
+
+karakterizedir (is_characterized_by)
+
+3. Ontolojik Üçlüler (Triples)
+Metindeki cümlelerin Özne -> Yüklem -> Nesne formatına dönüştürülmüş hali:
+
+Anatomi ve Fizyoloji:
+
+Anal_Yastık -> yerleşim_yeridir -> Anüs_ve_Rektum_Çevresi
+
+Anal_Yastık -> türüdür -> Venöz_Yapı
+
+Anal_Yastık -> işlevidir -> Anüsü_Kapatma (Dışkılama sırasında)
+
+Patogenez (Oluşum Süreci):
+
+İntra_Abdominal_Basınç_Artışı -> neden_olur -> Dilatasyon
+
+Venöz_Drenaj_Bozukluğu -> neden_olur -> Engorgement
+
+Bağ_Dokusu_Zayıflığı -> neden_olur -> Deplasman
+
+Dilatasyon ve Engorgement -> sonucudur -> Hemoroid
+
+Damar_Duvarı_Gerilmesi -> neden_olur -> Enflamasyon
+
+Tetikleyiciler:
+
+Sert_Dışkı -> tetikler -> Damar_Duvarı_Hasarı
+
+Aşırı_Ikınma -> artırır -> İntra_Abdominal_Basınç
+
+Komplikasyon (Tromboz):
+
+Tromboz -> engeller -> Kan_Akışı (Damar içindeki)
+
+Kan_Akışı_Engeli -> neden_olur -> Şiddetli_Şişme
+
+Tromboz -> kötüleştirir -> Dış_Hemoroid
+
+4. Mantıksal Aksiyom Örneği (OWL/Functional Syntax Tarzı)
+Eğer bunu bir yazılıma (örneğin geliştirmeyi düşündüğün ontoloji aracına) kural olarak girmek istersen:
+
+Plaintext
+Class: Hemoroid
+    EquivalentTo:
+        (Anormal_Genişleme some Anal_Yastık) AND
+        (Deplasman some Anal_Yastık)
+
+Class: Tromboze_Hemoroid
+    SubClassOf: Hemoroid
+    HasPart: (Tromboz AND (Engeller some Kan_Akışı))
+
+Rule:
+    IF (Faktör = İntra_Abdominal_Basınç_Artışı) OR (Faktör = Bağ_Dokusu_Zayıflığı)
+    THEN (Olasılık_Artar -> Hemoroid_Oluşumu)
+Bu yapıyı, daha önce ilgilendiğin yazılım projelerinde veri tabanı şeması oluşturmak veya bir sağlık chatbot'unun bilgi tabanını (Knowledge Graph) kurmak için kullanabilirsin.
+
+Bunu JSON-LD veya RDF formatına (Turtle) çevirmemi ister misin?
+
+https://www.ebi.ac.uk/QuickGO/GTerm?id=GO:0097146
+https://amigo.geneontology.org/amigo/search/bioentity?q=FOXC2
