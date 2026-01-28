@@ -142,5 +142,6 @@ Bu yapıyı, daha önce ilgilendiğin yazılım projelerinde veri tabanı şemas
 
 Bunu JSON-LD veya RDF formatına (Turtle) çevirmemi ister misin?
 
+https://gemini.google.com/share/267e1815fa62
 https://www.ebi.ac.uk/QuickGO/GTerm?id=GO:0097146
 https://amigo.geneontology.org/amigo/search/bioentity?q=FOXC2
